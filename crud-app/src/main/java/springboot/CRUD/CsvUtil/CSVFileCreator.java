@@ -17,16 +17,14 @@ public class CSVFileCreator {
 	
 	public static File create(List<Employee> data, String fileName) throws IOException {
 		File file = new File(fileName);
-		try {
-            FileWriter outputFile = new FileWriter(file);
-            CSVWriter writer = new CSVWriter(outputFile);
+		try (FileWriter outputFile = new FileWriter(file);
+            CSVWriter writer = new CSVWriter(outputFile)){
             writer.writeNext(HEADER);
             
             for(Employee employee : data) {
             	String[] line = {employee.getId().toString(), employee.getFirstName(), employee.getLastName()};
             	writer.writeNext(line);
             }
-            writer.close();
             logger.info("CSV file successfully created");
             return new File(fileName);
         } catch (IOException e) {
